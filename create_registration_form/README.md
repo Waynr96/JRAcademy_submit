@@ -1,4 +1,4 @@
-# 🚀 User Registration Form
+# 📋 User Registration Form
 
 一个基于 **HTML5**, **CSS3** 和 **Vanilla JavaScript** 构建的高性能、无障碍（Accessibility）用户注册系统。该项目不仅实现了美观的 UI 界面，还深度集成了浏览器原生的表单校验机制。
 
