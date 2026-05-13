@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Registration Form</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Welcome</h1>
+    </header>
+
+    <main>
+      <section id="form">
+        <h2>User Registration</h2>
+      </section>
+
+      <form id="register-form" action="/register" method="POST">
+        <div>
+          <!-- 
+            [label for="firstName"]：
+            - 绑定下方 ID 为 firstName 的输入框。
+            - 提升无障碍体验，且点击文字时光标会自动定位到输入框内。
+          -->
+          <label for="firstName">First Name</label>
+          <!-- 
+            名字输入框核心配置：
+            1. type="text": 标准文本输入。
+            2. id & name: id 用于 label 绑定和 CSS 定义，name 用于后端接收数据。
+            3. 长度校验：
+              - minlength="2": 强制要求至少输入 2 个字符（防止输入单个字母）。
+              - maxlength="20": 限制最多输入 20 个字符，防止长文本破坏数据库或布局。
+            4. 用户提示：
+              - placeholder: 在输入框内显示浅色提示文字，告诉用户期望的输入长度。
+              - required: 声明此项为必填，不能为空。
+          -->
+          <input
+            id="firstName"
+            name="firstName"
+            type="text"
+            required
+            minlength="2"
+            maxlength="20"
+            placeholder="2-20 characters"
+          />
+        </div>
+
+        <div>
+          <label for="lastName">Last Name</label>
+          <input
+            id="lastName"
+            name="lastName"
+            type="text"
+            required
+            minlength="2"
+            maxlength="20"
+            placeholder="2-20 characters"
+          />
+        </div>
+
+        <!-- 
+            邮箱输入框：
+            type="email": 
+              - 语义化：告诉浏览器这是一个邮箱地址。
+              - 自动校验：提交时，浏览器会自动检查内容是否包含 "@" 和域名（如 .com）。
+              - 移动端优化：在手机上点击此框时，虚拟键盘会自动显示 "@" 和 "." 快捷键。
+        -->
+        <div>
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            placeholder="example@domain.com"
+          />
+        </div>
+
+        <!-- 
+          密码输入组件说明：
+          1. 安全与输入行为：
+            - type="password": 掩码显示，防止旁窥。
+            - autocomplete="new-password": 明确为注册/改密场景，避开旧账号填充并触发浏览器强密码生成。
+            - spellcheck="false": 禁用拼写红线提示，提升视觉纯净度。
+          2. 校验逻辑 (Regex Machine)：
+            - pattern: 强制执行“至少8位、必须包含字母+数字、禁止特殊字符”的规则。
+          3. 用户反馈：
+            - title: 当输入不匹配正则时，浏览器会自动弹出的友好提示文字。
+        -->
+        <div>
+          <label for="secure-pwd">Password</label>
+
+          <input
+            type="password"
+            id="secure-pwd"
+            name="password"
+            required
+            autocomplete="new-password"
+            pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+            title="At least 8 characters, including letters and numbers"
+            spellcheck="false"
+          />
+        </div>
+
+        <div>
+          <label for="confirm-pwd">Confirm Password</label>
+          <input
+            type="password"
+            id="confirm-pwd"
+            name="confirmPassword"
+            required
+            autocomplete="new-password"
+            spellcheck="false"
+          />
+        </div>
+
+        <div>
+          <!-- type="date": 激活浏览器原生日期选择器 -->
+          <label for="dob">Date of Birth</label>
+          <input type="date" id="dob" name="dob" required />
+        </div>
+
+        <div>
+          <label>Gender</label>
+
+          <div class="gender-group">
+            <input type="radio" id="male" name="gender" value="male" required />
+            <label for="male">Male</label>
+
+            <input type="radio" id="female" name="gender" value="female" />
+            <label for="female">Female</label>
+
+            <input type="radio" id="other" name="gender" value="other" />
+            <label for="other">Other</label>
+          </div>
+        </div>
+
+        <div>
+          <label for="about">About Me</label>
+          <textarea
+            id="about"
+            name="about"
+            rows="4"
+            maxlength="300"
+            placeholder="Tell us something about yourself..."
+          ></textarea>
+        </div>
+
+        <div>
+          <label for="profession">Choose Your Profession</label>
+
+          <select id="profession" name="profession" required>
+            <option value="">-- Please select --</option>
+            <option value="web-development">Web Development</option>
+            <option value="data-analytics">Data Analytics</option>
+            <option value="ui-ux-design">UI/UX Design</option>
+            <option value="cybersecurity">Cyber Security</option>
+            <option value="ai-engineering">AI Engineering</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn">Create Account</button>
+      </form>
+
+      <script>
+        // 获取 DOM 元素：将 HTML 标签转化为 JS 可以操作的对象
+        const form = document.getElementById("register-form");
+        const password = document.getElementById("secure-pwd");
+        const confirmPassword = document.getElementById("confirm-pwd");
+
+        /**
+         * 1. 提交拦截逻辑 (Final Check)
+         * 监听表单的 'submit' 事件
+         */
+        form.addEventListener("submit", function (event) {
+          if (password.value !== confirmPassword.value) {
+            // event.preventDefault(): 阻止表单提交到服务器
+            event.preventDefault();
+          }
+        });
+
+        /**
+         * 2. 实时校验逻辑 (Real-time Feedback)
+         * 监听确认密码框的 'input' 事件（每打一个字都会触发）
+         */
+        confirmPassword.addEventListener("input", function () {
+          if (password.value !== confirmPassword.value) {
+            /**
+             * setCustomValidity:
+             * 这是 HTML5 原生校验的高级用法。
+             * 只要这里面有文字，浏览器就认为该输入框是“非法”的，无法提交。
+             */
+            confirmPassword.setCustomValidity("Passwords do not match");
+          } else {
+            // 传入空字符串，意味着清除错误，校验通过
+            confirmPassword.setCustomValidity("");
+          }
+        });
+      </script>
+    </main>
+
+    <footer>
+      <small>© 2026 Waynr96</small>
+    </footer>
+  </body>
+</html>
+
+<!--表单结构：你的表单应该至少包含以下字段：
+
+First Name (text input field)
+
+Last Name (text input field)
+
+Email Address (appropriate input type)
+
+Password (password input field with appropriate attributes to ensure security)
+
+Confirm Password (password input field)
+
+Date of Birth (date picker)
+
+Gender (radio buttons: Male/Female/Other)
+
+About Me (textarea)
+
+Choose Your Profession (dropdown list with options like "Web Development", "Data Analytics", "UI/UX Design", etc.)
+
+布局和样式：
+
+使用CSS为你的表单元素添加基本样式，如边框、背景颜色、文本颜色等。
+
+确保所有元素在各种设备和屏幕尺寸上都有清晰的布局和良好的可读性。
+
+考虑元素间的间距，确保表单整体布局美观。
+
+交互：
+
+为提交按钮添加hover效果。
+
+使用HTML5验证功能确保在提交之前填写了所有必需字段。
+
+确保电子邮件和密码字段有适当的格式限制。
+
+代码清晰性：确保你的代码结构清晰，HTML和CSS均应有合适的注释说明。-->
