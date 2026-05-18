@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>可复用组件库 Demo</title>
+    <!-- 引入样式表（提供基础视觉区分，结构本身已具备语义） -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!--
+      =====================================================================
+      页面整体结构：每个 <section class="demo-section"> 演示一类组件
+      命名约定（统一、清晰、具语义）：
+        - 块级组件：.btn / .card / .badge / .avatar
+        - 修饰符：  .btn-primary / .card-feature 等（块名 + 短横线 + 修饰）
+        - 子元素：  .card-title / .card-body （块名 + 短横线 + 子元素）
+      =====================================================================
+    -->
+    <header class="page-header">
+      <h1 class="page-title">可复用组件库</h1>
+      <p class="page-subtitle">Reusable HTML Components · 统一命名 · 即插即用</p>
+    </header>
+
+    <main class="page-main">
+      <!-- ============== 1. 按钮组件 Button ============== -->
+      <section class="demo-section" id="section-buttons">
+        <h2 class="section-title">1. 按钮组件 Button</h2>
+        <p class="section-desc">
+          基础类 <code>.btn</code> + 修饰类 <code>.btn-primary</code> /
+          <code>.btn-secondary</code>，支持任意元素 (button / a) 复用。
+        </p>
+
+        <div class="demo-row">
+          <!-- 主要按钮：用于页面主要操作，例如"提交""开始" -->
+          <button type="button" class="btn btn-primary">Primary 按钮</button>
+
+          <!-- 次要按钮：用于次级操作，例如"取消""了解更多" -->
+          <button type="button" class="btn btn-secondary">Secondary 按钮</button>
+
+          <!-- 链接按钮：使用 <a> 标签但保持按钮外观，class 完全相同 -->
+          <a href="#" class="btn btn-primary">链接型主按钮</a>
+
+          <!-- 禁用状态：在 .btn 基础上加 .btn-disabled 修饰符 -->
+          <button type="button" class="btn btn-primary btn-disabled" disabled>
+            禁用按钮
+          </button>
+        </div>
+      </section>
+
+      <!-- ============== 2. 卡片组件 Card ============== -->
+      <section class="demo-section" id="section-cards">
+        <h2 class="section-title">2. 卡片组件 Card</h2>
+        <p class="section-desc">
+          通用基础 <code>.card</code>，并衍生出 <code>.card-feature</code>（功能介绍）
+          与 <code>.card-testimonial</code>（用户评价）两种变体。
+        </p>
+
+        <!-- 2.1 Feature Card：用于功能介绍，结构 = icon + 标题 + 描述 -->
+        <h3 class="subsection-title">2.1 Feature Card 功能卡片</h3>
+        <div class="card-grid">
+          <!-- 单张 Feature Card 实例：图标 / 标题 / 描述三段式结构 -->
+          <article class="card card-feature">
+            <div class="card-icon">
+              <!-- 占位图标，使用 emoji 文字作为临时内容 -->
+              <span aria-hidden="true">⚡</span>
+            </div>
+            <h4 class="card-title">快速响应</h4>
+            <p class="card-body">
+              占位文字：基于轻量级架构，毫秒级响应你的每一次请求。
+            </p>
+          </article>
+
+          <article class="card card-feature">
+            <div class="card-icon"><span aria-hidden="true">🛡️</span></div>
+            <h4 class="card-title">安全可靠</h4>
+            <p class="card-body">
+              占位文字：端到端加密保障数据安全，符合行业合规标准。
+            </p>
+          </article>
+
+          <article class="card card-feature">
+            <div class="card-icon"><span aria-hidden="true">🌱</span></div>
+            <h4 class="card-title">持续演进</h4>
+            <p class="card-body">
+              占位文字：模块化设计，按需扩展功能，永不被锁定。
+            </p>
+          </article>
+        </div>
+
+        <!-- 2.2 Testimonial Card：用户评价，结构 = 引言 + 头像 + 姓名/职位 -->
+        <h3 class="subsection-title">2.2 Testimonial Card 用户评价卡片</h3>
+        <div class="card-grid">
+          <article class="card card-testimonial">
+            <!-- 引言部分：使用 <blockquote> 增强语义 -->
+            <blockquote class="card-quote">
+              "占位评价文字：这套组件库让我们的开发效率提升了至少 30%。"
+            </blockquote>
+            <!-- 作者部分：复用 avatar 子组件 -->
+            <div class="card-author">
+              <div class="avatar avatar-sm">
+                <img
+                  src="https://via.placeholder.com/40"
+                  alt="用户头像占位图"
+                  class="avatar-img"
+                />
+              </div>
+              <div class="card-author-info">
+                <p class="card-author-name">张三</p>
+                <p class="card-author-role">前端工程师 · ACME 公司</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="card card-testimonial">
+            <blockquote class="card-quote">
+              "占位评价文字：命名规范且语义清晰，新成员上手非常顺畅。"
+            </blockquote>
+            <div class="card-author">
+              <div class="avatar avatar-sm">
+                <img
+                  src="https://via.placeholder.com/40"
+                  alt="用户头像占位图"
+                  class="avatar-img"
+                />
+              </div>
+              <div class="card-author-info">
+                <p class="card-author-name">李四</p>
+                <p class="card-author-role">技术负责人 · Beta Studio</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ============== 3. 徽章组件 Badge / Pill ============== -->
+      <section class="demo-section" id="section-badges">
+        <h2 class="section-title">3. 徽章 Badge / Pill</h2>
+        <p class="section-desc">
+          基础类 <code>.badge</code>；圆角丸子型变体 <code>.badge-pill</code>；
+          状态色变体 <code>.badge-success</code> / <code>.badge-warning</code> /
+          <code>.badge-danger</code>。
+        </p>
+
+        <div class="demo-row">
+          <!-- 基础 badge：矩形（小圆角） -->
+          <span class="badge">默认</span>
+          <span class="badge badge-success">成功</span>
+          <span class="badge badge-warning">警告</span>
+          <span class="badge badge-danger">危险</span>
+
+          <!-- pill 变体：完全圆角，外观更柔和 -->
+          <span class="badge badge-pill">Pill 默认</span>
+          <span class="badge badge-pill badge-success">已上线</span>
+          <span class="badge badge-pill badge-warning">测试中</span>
+          <span class="badge badge-pill badge-danger">已下线</span>
+        </div>
+      </section>
+
+      <!-- ============== 4. 头像 + 用户下拉菜单 ============== -->
+      <section class="demo-section" id="section-avatar">
+        <h2 class="section-title">4. 头像 Avatar + 用户下拉菜单</h2>
+        <p class="section-desc">
+          外层 <code>.avatar-container</code> 承载触发器与菜单；
+          <code>.avatar</code> 为可独立使用的头像组件；
+          点击头像切换 <code>.user-dropdown</code> 的显示状态。
+        </p>
+
+        <div class="demo-row">
+          <!--
+            头像+下拉菜单完整结构：
+              .avatar-container       下拉菜单的定位上下文（外层包裹器）
+                └─ .avatar-trigger    点击触发器（按钮，含头像+用户名）
+                     └─ .avatar       头像本体（可独立复用）
+                └─ .user-dropdown     下拉菜单容器（默认隐藏，通过 is-open 切换）
+                     └─ .user-dropdown-item  菜单单项
+          -->
+          <div class="avatar-container" id="userMenu">
+            <!-- 触发器：使用 <button> 提升无障碍可访问性 -->
+            <button
+              type="button"
+              class="avatar-trigger"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <span class="avatar avatar-md">
+                <img
+                  src="https://via.placeholder.com/48"
+                  alt="当前用户头像"
+                  class="avatar-img"
+                />
+              </span>
+              <span class="avatar-name">用户名占位</span>
+              <!-- 下拉箭头小图标，使用 ▾ 字符占位 -->
+              <span class="avatar-caret" aria-hidden="true">▾</span>
+            </button>
+
+            <!-- 下拉菜单：默认 display:none，通过 .is-open 切换为可见 -->
+            <ul class="user-dropdown" role="menu">
+              <li class="user-dropdown-item" role="menuitem">
+                <a href="#" class="user-dropdown-link">个人主页</a>
+              </li>
+              <li class="user-dropdown-item" role="menuitem">
+                <a href="#" class="user-dropdown-link">账户设置</a>
+              </li>
+              <!-- 分隔线：使用语义性的 divider 子元素 -->
+              <li class="user-dropdown-divider" role="separator"></li>
+              <li class="user-dropdown-item" role="menuitem">
+                <a href="#" class="user-dropdown-link">退出登录</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- 独立的头像尺寸演示（不带下拉菜单） -->
+          <div class="avatar avatar-sm">
+            <img src="https://via.placeholder.com/32" alt="小尺寸头像" class="avatar-img" />
+          </div>
+          <div class="avatar avatar-md">
+            <img src="https://via.placeholder.com/48" alt="中尺寸头像" class="avatar-img" />
+          </div>
+          <div class="avatar avatar-lg">
+            <img src="https://via.placeholder.com/64" alt="大尺寸头像" class="avatar-img" />
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="page-footer">
+      <p>© 2026 Reusable Components Demo · 用于教学与项目集成</p>
+    </footer>
+
+    <!-- 引入交互脚本：仅处理头像下拉菜单的展开/收起 -->
+    <script src="app.js"></script>
+  </body>
+</html>

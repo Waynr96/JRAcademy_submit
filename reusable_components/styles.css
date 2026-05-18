@@ -1,0 +1,384 @@
+/* =====================================================================
+   reusable_components / styles.css
+   作用：为可复用组件提供「最小可视化样式」，
+        让没有样式系统的页面也能清晰区分各个组件的结构。
+        实际项目接入时可整体替换为自己的设计令牌。
+   ===================================================================== */
+
+/* ---------- 基础排版重置 ---------- */
+/* 通配选择器统一 box-sizing，避免 padding/border 计算意外 */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei",
+    sans-serif;
+  color: #1f2937;
+  background: #f9fafb;
+  line-height: 1.55;
+}
+
+code {
+  /* 行内代码：浅色背景 + 等宽字体，便于在描述中区分组件 class 名 */
+  background: #eef2ff;
+  color: #3730a3;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.92em;
+}
+
+/* ---------- 页面骨架 ---------- */
+.page-header,
+.page-footer {
+  text-align: center;
+  padding: 32px 16px;
+}
+
+.page-header {
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.page-title {
+  margin: 0 0 8px;
+  font-size: 28px;
+}
+
+.page-subtitle {
+  margin: 0;
+  color: #6b7280;
+}
+
+.page-main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+
+/* 每个演示区块：白底卡片包裹，使组件分组清晰 */
+.demo-section {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.section-title {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.subsection-title {
+  margin: 24px 0 12px;
+  font-size: 16px;
+  color: #374151;
+}
+
+.section-desc {
+  margin: 0 0 16px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* demo-row：横向 flex 容器，用于平铺多个组件实例 */
+.demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.page-footer {
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+/* =====================================================================
+   1. 按钮组件 Button
+   - .btn         基础类：尺寸、圆角、过渡、布局等共性
+   - .btn-primary 主按钮变体（实色填充）
+   - .btn-secondary 次按钮变体（描边样式）
+   - .btn-disabled 禁用态视觉
+   ===================================================================== */
+.btn {
+  /* inline-flex 既能水平排列图标+文字，又能正常受 vertical-align 影响 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none; /* <a> 当按钮用时需要去除下划线 */
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  user-select: none;
+}
+
+.btn-primary {
+  background: #4f46e5;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: #4338ca;
+}
+
+.btn-secondary {
+  background: #ffffff;
+  color: #4f46e5;
+  border-color: #c7d2fe;
+}
+
+.btn-secondary:hover {
+  background: #eef2ff;
+}
+
+.btn-disabled,
+.btn:disabled {
+  /* 同时支持 disabled 属性与 .btn-disabled class，兼容 <a> 标签场景 */
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* =====================================================================
+   2. 卡片组件 Card
+   - .card             基础卡片
+   - .card-feature     功能介绍卡片（图标 + 标题 + 描述）
+   - .card-testimonial 用户评价卡片（引言 + 作者信息）
+   - .card-grid        卡片网格容器（响应式自动换行）
+   ===================================================================== */
+
+/* card-grid：使用 grid 实现自适应列数（最小 220px，每行尽可能填满） */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+/* Feature Card 子元素 */
+.card-icon {
+  /* 图标圆形背景 */
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #eef2ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+.card-title {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+.card-body {
+  margin: 0;
+  color: #4b5563;
+  font-size: 14px;
+}
+
+/* Testimonial Card 子元素 */
+.card-quote {
+  margin: 0 0 16px;
+  font-style: italic;
+  color: #374151;
+  /* 自定义引号符号：在前后伪元素中添加装饰用的中文引号 */
+  position: relative;
+}
+
+.card-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.card-author-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-author-name {
+  margin: 0;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.card-author-role {
+  margin: 0;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* =====================================================================
+   3. 徽章 Badge / Pill
+   - .badge          基础徽章（矩形，小圆角）
+   - .badge-pill     圆角丸子型变体
+   - .badge-success / .badge-warning / .badge-danger 状态色变体
+   ===================================================================== */
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 4px;
+  background: #e5e7eb;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.badge-pill {
+  /* 极大的 border-radius 制造完全椭圆形 */
+  border-radius: 999px;
+}
+
+.badge-success {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.badge-warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge-danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* =====================================================================
+   4. 头像 Avatar + 用户下拉菜单
+   - .avatar              基础头像（圆形容器）
+   - .avatar-sm/.md/.lg   三档尺寸修饰
+   - .avatar-img          头像内部 <img>（铺满圆形容器）
+   - .avatar-container    头像 + 下拉菜单的外层定位容器
+   - .avatar-trigger      点击触发按钮
+   - .user-dropdown       下拉菜单本体
+   - .user-dropdown-item  菜单项
+   - .is-open             状态修饰类（由 JS 控制添加/移除）
+   ===================================================================== */
+.avatar {
+  display: inline-block;
+  border-radius: 50%;
+  overflow: hidden; /* 让内部 <img> 也呈圆形 */
+  background: #e5e7eb;
+  flex-shrink: 0; /* 在 flex 容器中防止被压缩变形 */
+}
+
+.avatar-sm {
+  width: 32px;
+  height: 32px;
+}
+
+.avatar-md {
+  width: 48px;
+  height: 48px;
+}
+
+.avatar-lg {
+  width: 64px;
+  height: 64px;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 保证不同比例的图片都能填充圆形容器 */
+  display: block;
+}
+
+/* ----- 头像下拉菜单 ----- */
+.avatar-container {
+  /* relative 定位作为 .user-dropdown 绝对定位的参照 */
+  position: relative;
+  display: inline-block;
+}
+
+.avatar-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  font: inherit;
+}
+
+.avatar-trigger:hover {
+  background: #f3f4f6;
+}
+
+.avatar-name {
+  font-size: 14px;
+  color: #1f2937;
+}
+
+.avatar-caret {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.user-dropdown {
+  /* 默认隐藏，通过 JS 给 .avatar-container 添加 .is-open 后显示 */
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 160px;
+  margin: 0;
+  padding: 6px 0;
+  list-style: none;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  z-index: 10;
+}
+
+/* 关键状态切换：父级带 is-open 时，下拉菜单显示 */
+.avatar-container.is-open .user-dropdown {
+  display: block;
+}
+
+.user-dropdown-item {
+  padding: 0;
+}
+
+.user-dropdown-link {
+  display: block;
+  padding: 8px 14px;
+  font-size: 14px;
+  color: #1f2937;
+  text-decoration: none;
+}
+
+.user-dropdown-link:hover {
+  background: #f3f4f6;
+}
+
+.user-dropdown-divider {
+  /* 用 1px 高、灰色背景的 <li> 充当分隔线，无需额外元素 */
+  height: 1px;
+  margin: 6px 0;
+  background: #e5e7eb;
+  list-style: none;
+}
