@@ -216,25 +216,434 @@ main {
   pointer-events: none;
 }
 
-/* 
+.hero-image2 {
+  display: block;
+  max-width: 1200px;
+  width: 100%;
+  height: auto;
+  margin: 80px auto 200px;
+}
 
+.pitch-line {
+  font-size: 32px;
+  font-weight: bold;
+  line-height: 1.25;
+  text-align: center;
+  color: #060606;
+  margin: 80px auto 40px;
+  max-width: 1150px;
+}
 
+.question-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  max-width: 1150px;
+  margin: 0 auto 120px;
+}
+
+.bullet-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  gap: 20px;
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.bullet-list p {
+  width: 540px;
+  height: 120px;
+  margin: 0;
+  padding: 44px 40px;
+  border-radius: 32px;
+  background-color: #f9fafc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.promo {
+  width: 560px;
+  height: 484px;
+  margin: 0;
+  padding: 48px 40px;
+  border-radius: 32px;
+  background-image: linear-gradient(137deg, #504ffd 6%, #40c3fb 96%);
+  font-size: 48px;
+  font-weight: bold;
+  line-height: 1.2;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.promo p {
+  max-width: 320px;
+  position: relative;
+  z-index: 1;
+}
+
+.promo img {
+  position: absolute;
+  bottom: 0;
+  right: -20px;
+  width: 228px;
+  height: auto;
+}
+.core-functions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: start;
+  max-width: 1150px;
+  /* 三个值的规则是：上 | 左右 | 下 */
+  margin: 80px auto 120px;
+}
+.core-function {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  text-align: left;
+  width: 540px;
+  height: 400px;
+  margin: 30px 0 0 0;
+
+  border-radius: 32px;
+  background-color: #f9fafc;
+}
+.core-function p {
+  height: 20px;
+  margin: 6px 0 0 42px;
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.43;
+  letter-spacing: normal;
+  color: #5c5c5c;
+}
+
+.core-function h3 {
+  height: 24px;
+  margin: 8px 0 6px 42px;
+  font-size: 20px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: normal;
+  color: #161616;
+}
+
+.demo {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  max-width: 1150px;
+  margin: 120px auto 120px;
+}
+.demo-left {
+  display: flex;
+  flex-direction: column;
+  /* flex-direction: column 时，align-items 控制的是水平方向的对齐。center 会把 h2 这个 flex 子项整体居中放置，
+  导致就算 text-align: left 生效，元素本身也不贴左边。
+  改成 align-items: flex-start 让子项靠左排列 */
+  align-items: flex-start;
+  gap: 0px;
+  flex: 1;
+}
+/* flex: 1 让左右两栏各占 .demo 容器一半宽度，width: 100% + height: auto 让图片在各自容器内自适应缩放，不会溢出也不会变形。 */
+.demo-left img {
+  width: 100%;
+  height: auto;
+}
+.demo-left h2 {
+  font-size: 26px;
+  color: #161616;
+  margin: 20px 0px 20px 0px;
+}
+.demo-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px;
+  flex: 1;
+}
+
+.demo-right img {
+  width: 100%;
+  height: auto;
+}
+
+.tech-section {
+  max-width: 1150px;
+  margin: 120px auto 120px;
+  position: relative;
+  overflow: hidden;
+}
+.tech-section img {
+  width: 100%; /* 让图片宽度撑满容器 */
+  display: block; /* 消除图片底部的微小空隙 */
+  height: auto; /* 保持图片比例 */
+}
+
+.textoverlay {
+  position: absolute; /* 核心：开启绝对定位，脱离正常文档流 */
+
+  /* 控制文字在图片上的位置（这里演示的是居中靠下显示） */
+  bottom: 20px; /* 距离图片底部 20px */
+  left: 20px; /* 距离图片左边 20px */
+  right: 20px; /* 距离图片右边 20px */
+}
+.textoverlay h2 {
+  font-size: 26px;
+  color: #161616;
+  text-align: center;
+}
+.textoverlay p {
+  font-size: 18px;
+  color: #5c5c5c;
+  text-align: center;
+}
+.testimonials-section {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  max-width: 1150px;
+  margin: 40px auto 120px;
+}
+
+.testimonial {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  border-radius: 16px;
+  border: 1px solid #e0e0e0;
+  background-color: #fff;
+  overflow: hidden; /*当子元素超出父容器的边界时，把超出的部分裁掉 */
+  min-height: 360px;
+}
+
+.testimonial-img {
+  width: 200px;
+  flex-shrink: 0; /* 禁止这个元素被压缩 */
+}
+
+.testimonial-img img {
+  width: 100%; /* 横向填满 .testimonial-img 容器（200px） */
+  height: 100%; /* 纵向填满卡片完整高度 */
+  object-fit: cover; /* 按比例缩放裁剪，不变形地覆盖整个区域 */
+  display: block; /* 消除图片底部因基线对齐产生的空隙 */
+}
+
+.testimonial-text {
+  flex: 1; /* 占满卡片剩余宽度 */
+  display: flex;
+  flex-direction: column; /* 内部元素从上到下排列 */
+  padding: 32px;
+}
+
+.testimonial-text h3 {
+  flex: 1; /* 撑满剩余垂直空间，把 h4/p 推到底部 */
+  align-self: flex-start; /* 文字靠顶部对齐，不拉伸到整个 flex 区域 */
+}
+
+.testimonial-text h4 {
+  margin-top: 32px;
+}
+
+.testimonial-text p {
+  margin-top: 4px;
+}
+
+.contact-section {
+  display: flex;
+  flex-direction: row;
+  gap: 80px;
+  align-items: flex-start;
+  max-width: 1150px;
+  margin: 120px auto;
+  padding: 80px;
+  background-color: #f5f5f7;
+  border-radius: 32px;
+}
+
+.contact-info {
+  /* 占满 .contact-section 里剩余宽度的一半。 */
+  flex: 1;
+}
+
+.contact-info h2 {
+  font-size: 40px;
+  font-weight: bold;
+  line-height: 1.2;
+  color: #161616;
+}
+
+/* 有 > 只控制第一层子元素，没 > 控制内部所有层级的元素 */
+.contact-info > p {
+  font-size: 15px;
+  color: #666;
+  line-height: 1.6;
+  margin-top: 16px;
+}
+
+.user-form {
+  flex: 1;
+}
+
+#contactForm {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#contactForm label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #161616;
+  margin-top: 12px;
+}
+
+#contactForm input,
+#contactForm select,
+#contactForm textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 15px;
+  color: #161616;
+  background-color: #fff;
+  outline: none;
+  font-family: inherit;
+}
+
+#contactForm select {
+  appearance: none; /* 去掉浏览器默认的下拉箭头和样式，方便自定义 */
+
+  /* 用内联 SVG 作为背景图，画一个向下的箭头 ˅ */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+
+  background-repeat: no-repeat; /* 背景图只显示一次，不重复平铺 */
+  background-position: right 16px center; /* 箭头放在右侧，距右边 16px，垂直居中 */
+  cursor: pointer; /* 鼠标悬停时显示手型，提示可点击 */
+}
+
+#contactForm textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+#contactForm input::placeholder,
+#contactForm textarea::placeholder {
+  color: #aaa;
+}
+
+.btn-submit {
+  align-self: flex-end;
+  margin-top: 8px;
+  background-color: #161616;
+  color: #fff;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 32px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+  background-color: #333;
+}
+
+.cta-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 1150px;
+  gap: 24px;
+  margin: 120px auto;
+  padding: 80px 40px;
+  border-radius: 32px;
+  background: linear-gradient(110deg, #504ffd 11%, #40c3fb 92%);
+}
+
+.cta-section h2 {
+  font-size: 36px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.cta-section p {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+}
 
 .btn-cta {
-  text-decoration: none;
-  background-color: #000;
+  background-color: #161616;
   color: #fff;
-  font-size: 16px;
-  font-weight: 500;
   padding: 14px 32px;
-  border-radius: 28px;
-  transition:
-    background-color 0.3s ease,
-    transform 0.2s ease;
+  border-radius: 32px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
   display: inline-block;
+  transition: background-color 0.3s ease;
+  margin: 60px auto 0px;
 }
 
 .btn-cta:hover {
   background-color: #333;
-  transform: translateY(-1px);
-} */
+}
+
+.footer {
+  background-color: #f5f5f7;
+  padding: 20px 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-left p {
+  font-size: 13px;
+  color: #999;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.footer-links a {
+  text-decoration: none;
+  font-size: 14px;
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #161616;
+}
