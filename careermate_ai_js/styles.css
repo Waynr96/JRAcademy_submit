@@ -47,7 +47,7 @@ body {
 }
 
 .logo-icon {
-  height: 24px;
+  height: 18px;
   width: auto;
 }
 
@@ -370,8 +370,6 @@ main {
 /* ======== TECH SECTION ======== */
 .tech-section {
   margin: 60px 16px;
-  position: relative;
-  overflow: hidden;
 }
 
 .tech-section img {
@@ -381,10 +379,7 @@ main {
 }
 
 .textoverlay {
-  position: absolute;
-  bottom: 10px;
-  left: 16px;
-  right: 16px;
+  padding: 16px 4px 0;
 }
 
 .textoverlay h2 {
@@ -418,15 +413,15 @@ main {
 
 .testimonial-img {
   width: 100%;
-  height: 180px;
-  flex-shrink: 0;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
 }
 
 .testimonial-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+  object-position: top center;
 }
 
 .testimonial-text {
@@ -884,12 +879,16 @@ main {
 
   .tech-section {
     margin: 80px 24px;
+    position: relative;
+    overflow: hidden;
   }
 
   .textoverlay {
+    position: absolute;
     bottom: 16px;
     left: 20px;
     right: 20px;
+    padding: 0;
   }
 
   .textoverlay h2 {
@@ -902,10 +901,6 @@ main {
 
   .testimonials-section {
     margin: 32px 24px 80px;
-  }
-
-  .testimonial-img {
-    height: 220px;
   }
 
   .testimonial-text h3 {
@@ -1125,8 +1120,16 @@ main {
   }
 
   .testimonial-img {
-    width: 200px;
-    height: auto;
+    width: 40%;
+    flex-shrink: 0;
+    align-self: stretch;
+  }
+
+  .testimonial-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
   }
 
   .testimonial-text {
