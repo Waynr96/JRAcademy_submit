@@ -487,7 +487,7 @@ main {
 #contactForm {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
 }
 
 .form-group {
@@ -535,7 +535,8 @@ main {
 }
 
 .btn-submit {
-  align-self: flex-end;
+  align-self: stretch;
+  justify-content: center;
   margin-top: 8px;
   background-color: #161616;
   color: #fff;
@@ -922,6 +923,12 @@ main {
     font-size: 36px;
   }
 
+  .btn-submit {
+    align-self: flex-end;
+    justify-content: unset;
+    width: auto;
+  }
+
   .cta-section {
     margin: 80px 24px;
     padding: 60px 40px;
@@ -1184,5 +1191,22 @@ main {
     right: 32px;
     width: 48px;
     height: 48px;
+  }
+}
+
+/* ================================================
+   MOBILE-ONLY overrides — max 767px
+   ================================================ */
+@media (max-width: 767px) {
+  /* Prevent toast from overflowing narrow viewports */
+  .toast-container {
+    left: 12px;
+    right: 12px;
+  }
+
+  .toast {
+    min-width: unset;
+    max-width: 100%;
+    width: 100%;
   }
 }
