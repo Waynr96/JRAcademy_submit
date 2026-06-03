@@ -1,0 +1,113 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+  text-align: center;
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  margin: 0 auto 40px;
+  max-width: 420px;
+  width: 420px;
+}
+
+/* background track line */
+.progress-container::before {
+  content: "";
+  background-color: #d9d9d9;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  height: 4px;
+  width: 100%;
+  z-index: 0;
+}
+
+/* filled progress line */
+.progress {
+  background-color: #6c63ff;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  height: 4px;
+  width: 0%;
+  z-index: 1;
+  transition: width 0.4s ease;
+}
+
+.circle {
+  background-color: #fff;
+  border: 3px solid #d9d9d9;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: #aaa;
+  position: relative;
+  z-index: 2;
+  transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.circle.active {
+  border-color: #6c63ff;
+  background-color: #6c63ff;
+  color: #fff;
+}
+
+/* pending async — pulse ring */
+.circle.loading {
+  border-color: #a89eff;
+  background-color: #a89eff;
+  color: #fff;
+  animation: pulse 0.9s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.12); }
+}
+
+.btn {
+  background-color: #6c63ff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 10px 32px;
+  margin: 0 10px;
+  transition: background-color 0.25s ease, opacity 0.25s ease;
+}
+
+.btn:hover:not(:disabled) {
+  background-color: #554fcc;
+}
+
+.btn:disabled {
+  background-color: #d9d9d9;
+  color: #aaa;
+  cursor: not-allowed;
+}
