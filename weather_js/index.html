@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Weather App</h1>
+      <p class="subtitle">Enter a city to get the current weather</p>
+
+      <div class="form-group">
+        <select id="cityInput">
+          <option value="">Select a city</option>
+          <option value="Sydney">Sydney</option>
+          <option value="Melbourne">Melbourne</option>
+          <option value="Adelaide">Adelaide</option>
+          <option value="Brisbane">Brisbane</option>
+          <option value="Perth">Perth</option>
+        </select>
+        <button id="getWeatherBtn">Get Weather</button>
+      </div>
+
+      <div id="weatherResult" class="weather-result hidden">
+        <div class="weather-icon" id="weatherIcon">☀️</div>
+        <div class="weather-info">
+          <h2 id="cityName">City</h2>
+          <p class="temperature" id="temperature">--°C</p>
+          <p class="description" id="description">--</p>
+        </div>
+        <div class="weather-details">
+          <div class="detail-item">
+            <span class="label">Humidity</span>
+            <span class="value" id="humidity">--%</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Wind</span>
+            <span class="value" id="wind">-- km/h</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Feels Like</span>
+            <span class="value" id="feelsLike">--°C</span>
+          </div>
+        </div>
+      </div>
+
+      <p id="errorMsg" class="error hidden"></p>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
