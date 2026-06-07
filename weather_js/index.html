@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Weather App</title>
+    <title>Weather in Australia</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div class="container">
-      <h1>Weather App</h1>
-      <p class="subtitle">Enter a city to get the current weather</p>
+      <h1>Weather in Australia</h1>
+      <p class="subtitle">Select a city to get the current weather</p>
 
       <div class="form-group">
         <select id="cityInput">
@@ -19,6 +19,9 @@
           <option value="Adelaide">Adelaide</option>
           <option value="Brisbane">Brisbane</option>
           <option value="Perth">Perth</option>
+          <option value="Canberra">Canberra</option>
+          <option value="Darwin">Darwin</option>
+          <option value="Hobart">Hobart</option>
         </select>
         <button id="getWeatherBtn">Get Weather</button>
       </div>
@@ -40,8 +43,8 @@
             <span class="value" id="wind">-- km/h</span>
           </div>
           <div class="detail-item">
-            <span class="label">Feels Like</span>
-            <span class="value" id="feelsLike">--°C</span>
+            <span class="label">Rain Chance</span>
+            <span class="value" id="precipitation">--%</span>
           </div>
         </div>
       </div>
