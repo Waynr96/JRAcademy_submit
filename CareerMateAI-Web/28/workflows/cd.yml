@@ -1,0 +1,101 @@
+name: CD - Deploy to AWS S3
+
+# 触发条件：推送到main分支时自动部署
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # 允许手动触发
+
+# 环境变量
+env:
+  AWS_REGION: ap-southeast-2  # AWS区域（悉尼）
+
+jobs:
+  # 部署到S3
+  deploy:
+    name: Deploy to S3
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. 检出代码
+      - name: 检出代码
+        uses: actions/checkout@v4
+      
+      # 2. 显示要部署的文件
+      - name: 显示项目文件
+        run: |
+          echo "📦 准备部署以下文件："
+          ls -la
+          echo ""
+          echo "✅ 文件检查完成"
+      
+      # 3. 配置EmailJS凭证
+      - name: 配置EmailJS凭证
+        run: |
+          echo "🔐 配置EmailJS凭证..."
+          
+          # 替换script.js中的EmailJS占位符
+          sed -i "s/your-public-key/${{ secrets.EMAILJS_PUBLIC_KEY }}/g" script.js
+          sed -i "s/your-server-id/${{ secrets.EMAILJS_SERVICE_ID }}/g" script.js
+          sed -i "s/your-template-id/${{ secrets.EMAILJS_TEMPLATE_ID }}/g" script.js
+          
+          echo "✅ EmailJS配置完成！"
+      
+      # 4. 配置AWS凭证
+      - name: 配置AWS凭证
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      
+      # 5. 上传文件到S3
+      - name: 上传到S3
+        run: |
+          echo "🚀 开始上传文件到S3..."
+          aws s3 sync . s3://${{ secrets.S3_BUCKET_NAME }}/ \
+            --delete \
+            --exclude ".git/*" \
+            --exclude ".github/*" \
+            --exclude "*.md"
+          echo "✅ 上传完成！"
+      
+      # 6. 显示部署结果
+      - name: 部署完成
+        run: |
+          echo "🎉 部署成功！"
+          echo ""
+          echo "📊 部署信息："
+          echo "  Bucket: ${{ secrets.S3_BUCKET_NAME }}"
+          echo "  区域: ${{ env.AWS_REGION }}"
+          echo "  时间: $(date)"
+          echo ""
+          echo "🌐 访问地址:"
+          echo "  http://${{ secrets.S3_BUCKET_NAME }}.s3-website-${{ env.AWS_REGION }}.amazonaws.com"
+
+  # 检查网站是否正常
+  check:
+    name: Check Website
+    runs-on: ubuntu-latest
+    needs: deploy  # 等待deploy完成
+    
+    steps:
+      - name: 检查网站
+        run: |
+          echo "🔍 检查网站是否可以访问..."
+          sleep 5  # 等待5秒让部署生效
+          
+          URL="http://${{ secrets.S3_BUCKET_NAME }}.s3-website-${{ env.AWS_REGION }}.amazonaws.com"
+          
+          # 检查网站状态
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" $URL)
+          
+          if [ $STATUS -eq 200 ]; then
+            echo "✅ 网站正常！(HTTP $STATUS)"
+            echo "🌐 访问: $URL"
+          else
+            echo "❌ 网站异常 (HTTP $STATUS)"
+            exit 1
+          fi
+
+

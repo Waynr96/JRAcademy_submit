@@ -1,0 +1,307 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerMate AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+               <img src="assets/logo-icon.png" alt="CareerMate AI Logo" class="logo-icon">
+               <img src="assets/logo-text.png" alt="CareerMate AI text" class="logo-text">
+            </div>
+            <div class="nav-links">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#demo" class="nav-link">Demo</a>
+            </div>
+            <div class="nav-buttons">
+                <a href="#signin" class="btn-signin">Sign In</a>
+                <a href="#start" class="btn-start">Start for Free</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        Your AI Career Practice Partner
+                    </h1>
+                    <p class="hero-description">
+                        Get job-ready with AI — from resumes to interviews,<br>
+                        CareerMate AI coaches you step by step.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#start" class="btn-hero-primary">Start for Free
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 10H16M16 10L10 4M16 10L10 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                        <a href="#demo" class="btn-hero-secondary">Watch Demo
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 10H16M16 10L10 4M16 10L10 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+
+                    </div>
+                </div>
+                <img src="assets/arrow-decoration.png" alt="hero-decoration" aria-hidden="true" class="hero-decoration">
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="features-container">
+                <img src="assets/features-showcase.png" alt="features-showcase" aria-hidden="true" class="features-img">
+            </div>
+        </section>
+
+        <section class="problem-solution">
+            <h2 class="problem-title">Still Struggling with Job Applications?</h2>
+            <div class="problem-solution-container">
+                <div class="problems-side">
+                    
+                    <div class="problems-list">
+                        <div class="problem-item">
+                            <p class="problem-text">Your resume keeps getting ignored.</p>
+                            <div class="problem-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7 17L17 7M17 7H7M17 7V17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="problem-item">
+                            <p class="problem-text">You don’t know what interviewers expect.</p>
+                            <div class="problem-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7 17L17 7M17 7H7M17 7V17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="problem-item">
+                            <p class="problem-text">You’re unsure how to plan your career.</p>
+                            <div class="problem-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7 17L17 7M17 7H7M17 7V17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="solution-side">
+                    <div class="solution-card">
+                        <div class="solution-content">
+                            <h3 class="solution-text">CareerMate AI helps you fix all of that — smartly.</h3>
+                        </div>
+                        <img src="assets/rocket-icon.png" alt="Rocket" class="rocket-icon"rocket-icon>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features-showcase">
+            <div class="features-showcase-container">
+                <h2 class="features-showcase-title">Everything You Need to Grow Your Career</h2>
+                <div class="features-showcase-grid">
+                    <div class="feature-card">
+                        <img src="assets/card-mock-interview.png" alt="AI Mock Interview" class="feature-card-img">
+                        <h3 class="feature-card-title">AI Mock Interview</h3>
+                        <p class="feature-card-desc">Practice real interview questions and get instant feedback.</p>
+                    </div>
+                    <div class="feature-card">
+                        <img src="assets/card-resume-analyzer.png" alt="Resume Analyzer" class="feature-card-img">
+                        <h3 class="feature-card-title">Resume Analyzer</h3>
+                        <p class="feature-card-desc">Upload your resume, and get improvement tips instantly.</p>
+                    </div>
+                    <div class="feature-card">
+                        <img src="assets/card-career-coach.png" alt="Career Coach Mode" class="feature-card-img">
+                        <h3 class="feature-card-title">Career Coach Mode</h3>
+                        <p class="feature-card-desc">Discover your ideal job path and skill roadmap.</p>
+                    </div>
+                    <div class="feature-card">
+                        <img src="assets/card-project-reviewer.png" alt="Project Reviewer" class="feature-card-img">
+                        <h3 class="feature-card-title">Project Reviewer</h3>
+                        <p class="feature-card-desc">Let AI turn your past projects into strong interview stories.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="ai-action">
+            <div class="ai-action-container">
+                <div class="ai-action-left">
+                    <h2 class="ai-action-title">See CareerMate AI in Action</h2>
+                    <div class="ai-action-bg">
+                        <img src="assets/action-left-bg.png" alt="AI Action Background" class="ai-action-bg-img">
+                    </div>
+                </div>
+                <div class="ai-action-right">
+                    <img src="assets/action-chat-interface.png" alt="AI Assistant Chat" class="chat-interface-img">
+                </div>
+            </div>
+        </section>
+
+        <section class="ai-engineer">
+            <div class="ai-engineer-container">
+                <div class="ai-engineer-bg">
+                    <img src="assets/ai-engineering-bg.png" alt="AI Engineer Background" class="ai-engineer-bg-img">
+                </div>
+
+                <div class="ai-engineer-content">
+                    <h2 class="ai-engineer-title">Built with the Power of AI Engineering</h2>
+                    <p class="ai-engineer-subtitle">Powered by OpenAI GPT models, LangChain, and AWS Cloud.</p>
+                    <p class="ai-engineer-description">Developed by JR Academy’s AI Engineering program — where learning meets innovation.</p>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="testimonials">
+            <div class="testimonials-container">
+                <h2 class="testimonials-title">Trusted by Students Worldwide</h2>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <img src="assets/testimonial-emily.png" alt="Emily" class="testimonial-img">
+                        <div class="testimonial-content">
+                            <p class="testimonial-quote">“CareerMate AI helped me improve my resume and confidence — I landed my first software internship!”</p>
+                            <div class="testimonial-author">
+                                <p class="testimonial-author-name">Emily</p>
+                                <p class="testimonial-author-role">University of Sydney</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <img src="assets/testimonial-jason.png" alt="Jason" class="testimonial-img">
+                        <div class="testimonial-content">
+                            <p class="testimonial-quote">“The AI mock interviews were just like the real thing.”</p>
+                            <div class="testimonial-author">
+                                <p class="testimonial-author-name">Jason</p>
+                                <p class="testimonial-author-role">UNSW Graduate</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-section">
+            <div class="contact-container">
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <h2 class="contact-title">Get in<br>touch with us</h2>
+                        <p class="contact-description">
+                            We're here to help! Whether you have a question about our services, 
+                            need assistance with your account, or want to provide feedback, 
+                            our team is ready to assist you.
+                        </p>
+                        
+                        <div class="contact-details">
+                            <div class="contact-detail">
+                                <p class="detail-label">Email:</p>
+                                <p class="detail-value">Hello@careermate.com</p>
+                            </div>
+                            
+                            <div class="contact-detail">
+                                <p class="detail-label">Phone:</p>
+                                <p class="detail-value">+61 123456789</p>
+                            </div>
+                            <p class="available-time">Available Monday to Friday, 9 AM - 6 PM GMT</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            
+
+            <div class="contact-form-wrapper">
+                <form class="form" id="contactForm">
+                    <div class="form-group">
+                        <label for="fullName" class="form-label">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" class="form-input" placeholder="Your full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="text" id="email" name="email" class="form-input" placeholder="Your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="role" class="form-label">Role</label>
+                        <select id="role" name="role" class="form-select" required>
+                            <option value="">Selected</option>
+                            <option value="student">Student</option>
+                            <option value="professional">Professional</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="field" class="form-label">Your Field</label>
+                        <select name="field" id="field" class="form-select" required>
+                            <option value="">Selected</option>
+                            <option value="software-engineering">Software Engineering</option>
+                            <option value="data-science">Data Science</option>
+                            <option value="cybersecurity">Cybersecurity</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea id="message" name="message" class="form-textarea" placeholder="Enter your message..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="form-submit">
+                        Send Message
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 10H16M16 10L10 4M16 10L10 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+
+                    </button>
+                </form>
+            </div>
+        </div>
+        </section>
+
+        <section class="cta">
+            <div class="cta-container">
+                <div class="cta-card">
+                    <h2 class="cta-title">Ready to level up your career?</h2>
+                    <p class="cta-subtitle">Start your AI-powered journey today.<br>
+                        It’s free, smart, and made for you.</p>
+                </div>
+                <a href="#start" class="cta-button">Start Practingcing for Free</a>
+            </div>
+        </section>
+
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="footer-logo">
+                    <img src="assets/logo-icon.png" alt="CareerMate AI Logo" class="footer-logo-icon">
+                    <img src="assets/logo-text.png" alt="CareerMate AI" class="footer-logo-text">
+                </div>
+                <p class="footer-copyright">© 2026 CareerMate AI by JR Academy</p>
+            </div>
+            <div class="footer-links">
+                <a href="#terms" class="footer-link">Terms</a>
+                <a href="#privacy" class="footer-link">Privacy</a>
+                <a href="#contact" class="footer-link">Contact</a>
+                <a href="https://jracademy.com.au" target="_blank" class="footer-link">JR Academy</a>
+            </div>
+        </div>
+    </footer>
+
+    <button id="backToTop" class="back-to-top">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 19V5M12 5L5 12M12 5L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+
+    </button>
+</body>
+</html>
