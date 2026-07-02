@@ -7,6 +7,7 @@ import {
   validateConfirmPassword,
   validateRegister,
 } from "../../utils/validators";
+import TextInput from "../../components/TextInput";
 import "./register.css";
 
 function mockRegister() {
@@ -98,61 +99,41 @@ function Register() {
 
         {/* onSubmit：点击 type="submit" 的按钮时触发 handleSubmit */}
         <form onSubmit={handleSubmit}>
-          {/* ── Name 字段 ── */}
-          <div className="form-group">
-            <label className="form-label">Name</label>
-            {/* 有错误时给输入框加 input-error 样式（红色边框），没错误就是普通样式 */}
-            {/* value 受控输入：输入框的值由 name 这个 state 控制；onChange 每次打字都触发 nameChange */}
-            <input
-              className={`form-input ${nameError ? "input-error" : ""}`}
-              type="text"
-              placeholder="Enter your name"
-              value={name}
-              onChange={nameChange}
-            />
-            {/* nameError 不为空时才显示错误提示段落，为空时什么都不渲染 */}
-            {nameError && <p className="error-message">{nameError}</p>}
-          </div>
+          <TextInput
+            label="Name"
+            type="text"
+            placeholder="Enter your name"
+            value={name}
+            onChange={nameChange}
+            error={nameError}
+          />
 
-          <div className="form-group">
-            <label className="form-label">Email</label>
-            <input
-              className={`form-input ${emailError ? "input-error" : ""}`}
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={emailChange}
-            />
-            {emailError && <p className="error-message">{emailError}</p>}
-          </div>
+          <TextInput
+            label="Email"
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={emailChange}
+            error={emailError}
+          />
 
-          <div className="form-group">
-            <label className="form-label">Password</label>
-            <input
-              // 如果 passwordError 有内容 → 加上 input-error, class="form-input input-error"
-              // 如果 passwordError 没有内容 → 什么都不加, class="form-input"
-              className={`form-input ${passwordError ? "input-error" : ""}`}
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={passwordChange}
-            />
-            {passwordError && <p className="error-message">{passwordError}</p>}
-          </div>
+          <TextInput
+            label="Password"
+            type="password"
+            placeholder="Enter your password"
+            value={password}
+            onChange={passwordChange}
+            error={passwordError}
+          />
 
-          <div className="form-group">
-            <label className="form-label">Confirm Password</label>
-            <input
-              className={`form-input ${confirmPasswordError ? "input-error" : ""}`}
-              type="password"
-              placeholder="Confirm your password"
-              value={confirmPassword}
-              onChange={confirmPasswordChange}
-            />
-            {confirmPasswordError && (
-              <p className="error-message">{confirmPasswordError}</p>
-            )}
-          </div>
+          <TextInput
+            label="Confirm Password"
+            type="password"
+            placeholder="Confirm your password"
+            value={confirmPassword}
+            onChange={confirmPasswordChange}
+            error={confirmPasswordError}
+          />
 
           {/* 提交按钮，type="submit" 会触发 form 的 onSubmit */}
           <button

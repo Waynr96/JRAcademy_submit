@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { validateLoginEmail, validateLoginPassword, validateLogin } from "../../utils/validators";
+import TextInput from "../../components/TextInput";
 import "./login.css";
 
 function mockLogin(email, password) {
@@ -57,28 +58,22 @@ function Login() {
     <div className="login-page">
       <div className="login-card">
         <h1 className="login-title">Login</h1>
-        <div className="form-group">
-          <label className="form-label">Email</label>
-          <input
-            className={`form-input ${emailError ? "input-error" : ""}`}
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={emailChange}
-          />
-          {emailError && <p className="error-message">{emailError}</p>}
-        </div>
-        <div className="form-group">
-          <label className="form-label">Password</label>
-          <input
-            className={`form-input ${passwordError ? "input-error" : ""}`}
-            type="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={passwordChange}
-          />
-          {passwordError && <p className="error-message">{passwordError}</p>}
-        </div>
+        <TextInput
+          label="Email"
+          type="email"
+          placeholder="Enter your email"
+          value={email}
+          onChange={emailChange}
+          error={emailError}
+        />
+        <TextInput
+          label="Password"
+          type="password"
+          placeholder="Enter your password"
+          value={password}
+          onChange={passwordChange}
+          error={passwordError}
+        />
         <button
           className={`login-btn ${status === "loading" ? "btn-loading" : ""}`}
           onClick={handleLogin}
