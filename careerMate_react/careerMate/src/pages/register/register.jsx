@@ -28,6 +28,12 @@ function validateConfirmPassword(value, password) {
   return "";
 }
 
+function mockRegister() {
+  return new Promise((resolve) => {
+    setTimeout(resolve, 1000);
+  });
+}
+
 function Register() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -40,6 +46,8 @@ function Register() {
 
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+  const [status, setStatus] = useState("idle");
 
   // 事件处理函数
   // e 是事件对象，e.target.value 就是输入框里当前的文字
@@ -72,7 +80,7 @@ function Register() {
   }
 
   // ─── 点击 Register 按钮时触发 ───
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     // 阻止表单默认行为（默认会刷新页面），让我们自己控制提交逻辑
     e.preventDefault();
 
@@ -90,7 +98,13 @@ function Register() {
     setConfirmPasswordError(ce);
 
     if (ne || ee || pe || ce) return;
-    console.log("Register:", { name, email, password });
+
+    setStatus("loading");
+    await mockRegister();
+    setStatus("success");
+
+    // 停留片刻让用户看到成功提示，再跳转回登录页
+    setTimeout(() => navigate("/"), 1000);
   }
 
   return (
@@ -157,10 +171,17 @@ function Register() {
           </div>
 
           {/* 提交按钮，type="submit" 会触发 form 的 onSubmit */}
-          <button className="register-btn" type="submit">
-            Register
+          <button
+            className={`register-btn ${status === "loading" ? "btn-loading" : ""}`}
+            type="submit"
+            disabled={status === "loading"}
+          >
+            {status === "loading" ? "Registering..." : "Register"}
           </button>
         </form>
+        {status === "success" && (
+          <p className="success-message">Register success</p>
+        )}
         <p className="switch-auth-text">
           Already have an account?{" "}
           <span className="switch-auth-link" onClick={() => navigate("/")}>
