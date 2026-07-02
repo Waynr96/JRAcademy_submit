@@ -9,14 +9,14 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-.login-page {
+.register-page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.login-card {
+.register-card {
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -25,7 +25,7 @@ body {
   max-width: 400px;
 }
 
-.login-title {
+.registre-title {
   font-size: 28px;
   font-weight: 700;
   color: #1a1a1a;
@@ -63,7 +63,7 @@ body {
   border-color: #ef4444;
 }
 
-.login-btn {
+.register-btn {
   width: 100%;
   padding: 11px;
   margin-top: 8px;
@@ -77,12 +77,12 @@ body {
   transition: background-color 0.2s;
 }
 
-.login-btn:hover:not(:disabled) {
+.register-btn:hover:not(:disabled) {
   background-color: #4338ca;
 }
 
-.login-btn.btn-loading,
-.login-btn:disabled {
+.register-btn.btn-loading,
+.register-btn:disabled {
   background-color: #a5b4fc;
   cursor: not-allowed;
 }

@@ -1,0 +1,175 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./register.css";
+
+function validateName(value) {
+  // trim() 去掉首尾空格，防止用户只输入空格就通过校验
+  if (!value.trim()) return "Name is required";
+  return "";
+}
+
+// 校验邮箱
+function validateEmail(value) {
+  if (!value.trim()) return "Email is required";
+  if (!value.includes("@")) return "Invalid email format";
+  return "";
+}
+
+// 校验密码
+function validatePassword(value) {
+  if (!value.trim()) return "Password is required";
+  if (value.length < 6) return "Password must be at least 6 characters";
+  return "";
+}
+
+function validateConfirmPassword(value, password) {
+  if (!value.trim()) return "Confirm Password is required";
+  if (value !== password) return "Passwords do not match";
+  return "";
+}
+
+function Register() {
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+
+  const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+  // 事件处理函数
+  // e 是事件对象，e.target.value 就是输入框里当前的文字
+
+  function nameChange(e) {
+    const value = e.target.value;
+    setName(value);
+    setNameError(validateName(value));
+  }
+
+  function emailChange(e) {
+    const value = e.target.value;
+    setEmail(value);
+    setEmailError(validateEmail(value));
+  }
+
+  function passwordChange(e) {
+    const value = e.target.value;
+    setPassword(value);
+    setPasswordError(validatePassword(value));
+    if (confirmPassword) {
+      setConfirmPasswordError(validateConfirmPassword(confirmPassword, value));
+    }
+  }
+
+  function confirmPasswordChange(e) {
+    const value = e.target.value;
+    setConfirmPassword(value);
+    setConfirmPasswordError(validateConfirmPassword(value, password));
+  }
+
+  // ─── 点击 Register 按钮时触发 ───
+  function handleSubmit(e) {
+    // 阻止表单默认行为（默认会刷新页面），让我们自己控制提交逻辑
+    e.preventDefault();
+
+    // 对所有字段做一次完整校验，把结果存到临时变量
+    // （不能直接用 nameError 等 state，因为 state 的更新是异步的，这里拿到的可能是旧值）
+    const ne = validateName(name);
+    const ee = validateEmail(email);
+    const pe = validatePassword(password);
+    const ce = validateConfirmPassword(confirmPassword, password);
+
+    // 把校验结果更新到 state，让页面显示所有错误提示
+    setNameError(ne);
+    setEmailError(ee);
+    setPasswordError(pe);
+    setConfirmPasswordError(ce);
+
+    if (ne || ee || pe || ce) return;
+    console.log("Register:", { name, email, password });
+  }
+
+  return (
+    <div className="register-page">
+      <div className="register-card">
+        <h1 className="registre-title">CareerMate Register</h1>
+
+        {/* onSubmit：点击 type="submit" 的按钮时触发 handleSubmit */}
+        <form onSubmit={handleSubmit}>
+          {/* ── Name 字段 ── */}
+          <div className="form-group">
+            <label className="form-label">Name</label>
+            {/* 有错误时给输入框加 input-error 样式（红色边框），没错误就是普通样式 */}
+            {/* value 受控输入：输入框的值由 name 这个 state 控制；onChange 每次打字都触发 nameChange */}
+            <input
+              className={`form-input ${nameError ? "input-error" : ""}`}
+              type="text"
+              placeholder="Enter your name"
+              value={name}
+              onChange={nameChange}
+            />
+            {/* nameError 不为空时才显示错误提示段落，为空时什么都不渲染 */}
+            {nameError && <p className="error-message">{nameError}</p>}
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Email</label>
+            <input
+              className={`form-input ${emailError ? "input-error" : ""}`}
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={emailChange}
+            />
+            {emailError && <p className="error-message">{emailError}</p>}
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Password</label>
+            <input
+              // 如果 passwordError 有内容 → 加上 input-error, class="form-input input-error"
+              // 如果 passwordError 没有内容 → 什么都不加, class="form-input"
+              className={`form-input ${passwordError ? "input-error" : ""}`}
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={passwordChange}
+            />
+            {passwordError && <p className="error-message">{passwordError}</p>}
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Confirm Password</label>
+            <input
+              className={`form-input ${confirmPasswordError ? "input-error" : ""}`}
+              type="password"
+              placeholder="Confirm your password"
+              value={confirmPassword}
+              onChange={confirmPasswordChange}
+            />
+            {confirmPasswordError && (
+              <p className="error-message">{confirmPasswordError}</p>
+            )}
+          </div>
+
+          {/* 提交按钮，type="submit" 会触发 form 的 onSubmit */}
+          <button className="register-btn" type="submit">
+            Register
+          </button>
+        </form>
+        <p className="switch-auth-text">
+          Already have an account?{" "}
+          <span className="switch-auth-link" onClick={() => navigate("/")}>
+            Login
+          </span>
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export default Register;

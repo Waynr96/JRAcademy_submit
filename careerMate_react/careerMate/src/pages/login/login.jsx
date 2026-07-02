@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./login.css";
 
 function validateEmail(value) {
@@ -28,6 +29,7 @@ function mockLogin(email, password) {
 }
 
 function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -96,6 +98,12 @@ function Login() {
         {status === "success" && (
           <p className="success-message">Login Success</p>
         )}
+        <p className="switch-auth-text">
+          Don't have an account?{" "}
+          <span className="switch-auth-link" onClick={() => navigate("/register")}>
+            Register
+          </span>
+        </p>
       </div>
     </div>
   );
