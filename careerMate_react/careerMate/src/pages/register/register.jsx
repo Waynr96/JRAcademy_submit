@@ -1,32 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  validateName,
+  validateRegisterEmail,
+  validateRegisterPassword,
+  validateConfirmPassword,
+  validateRegister,
+} from "../../utils/validators";
 import "./register.css";
-
-function validateName(value) {
-  // trim() 去掉首尾空格，防止用户只输入空格就通过校验
-  if (!value.trim()) return "Name is required";
-  return "";
-}
-
-// 校验邮箱
-function validateEmail(value) {
-  if (!value.trim()) return "Email is required";
-  if (!value.includes("@")) return "Invalid email format";
-  return "";
-}
-
-// 校验密码
-function validatePassword(value) {
-  if (!value.trim()) return "Password is required";
-  if (value.length < 6) return "Password must be at least 6 characters";
-  return "";
-}
-
-function validateConfirmPassword(value, password) {
-  if (!value.trim()) return "Confirm Password is required";
-  if (value !== password) return "Passwords do not match";
-  return "";
-}
 
 function mockRegister() {
   return new Promise((resolve) => {
@@ -61,13 +42,13 @@ function Register() {
   function emailChange(e) {
     const value = e.target.value;
     setEmail(value);
-    setEmailError(validateEmail(value));
+    setEmailError(validateRegisterEmail(value));
   }
 
   function passwordChange(e) {
     const value = e.target.value;
     setPassword(value);
-    setPasswordError(validatePassword(value));
+    setPasswordError(validateRegisterPassword(value));
     if (confirmPassword) {
       setConfirmPasswordError(validateConfirmPassword(confirmPassword, value));
     }
@@ -84,20 +65,23 @@ function Register() {
     // 阻止表单默认行为（默认会刷新页面），让我们自己控制提交逻辑
     e.preventDefault();
 
-    // 对所有字段做一次完整校验，把结果存到临时变量
+    // 对所有字段做一次完整校验
     // （不能直接用 nameError 等 state，因为 state 的更新是异步的，这里拿到的可能是旧值）
-    const ne = validateName(name);
-    const ee = validateEmail(email);
-    const pe = validatePassword(password);
-    const ce = validateConfirmPassword(confirmPassword, password);
+    const errMsg = validateRegister({ name, email, password, confirmPassword });
 
     // 把校验结果更新到 state，让页面显示所有错误提示
-    setNameError(ne);
-    setEmailError(ee);
-    setPasswordError(pe);
-    setConfirmPasswordError(ce);
+    setNameError(errMsg.nameError);
+    setEmailError(errMsg.emailError);
+    setPasswordError(errMsg.passwordError);
+    setConfirmPasswordError(errMsg.confirmPasswordError);
 
-    if (ne || ee || pe || ce) return;
+    if (
+      errMsg.nameError ||
+      errMsg.emailError ||
+      errMsg.passwordError ||
+      errMsg.confirmPasswordError
+    )
+      return;
 
     setStatus("loading");
     await mockRegister();

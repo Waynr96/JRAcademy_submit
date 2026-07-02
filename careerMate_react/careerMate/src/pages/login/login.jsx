@@ -1,20 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { validateLoginEmail, validateLoginPassword, validateLogin } from "../../utils/validators";
 import "./login.css";
-
-function validateEmail(value) {
-  if (!value.trim()) return "Email is required";
-  if (!value.includes("@")) return "Invalid email format";
-  if (value.length > 50) return "Email must be less than 50 characters";
-  return "";
-}
-
-function validatePassword(value) {
-  if (!value.trim()) return "Password is required";
-  if (value.length < 6) return "Password must be at least 6 characters";
-  if (value.length > 20) return "Password must be less than 20 characters";
-  return "";
-}
 
 function mockLogin(email, password) {
   return new Promise((resolve, reject) => {
@@ -40,16 +27,21 @@ function Login() {
   function emailChange(e) {
     const value = e.target.value;
     setEmail(value);
-    setEmailError(validateEmail(value));
+    setEmailError(validateLoginEmail(value));
   }
 
   function passwordChange(e) {
     const value = e.target.value;
     setPassword(value);
-    setPasswordError(validatePassword(value));
+    setPasswordError(validateLoginPassword(value));
   }
 
   async function handleLogin() {
+    const errMsg = validateLogin({ email, password });
+    setEmailError(errMsg.emailError);
+    setPasswordError(errMsg.passwordError);
+    if (errMsg.emailError || errMsg.passwordError) return;
+
     setError("");
     setStatus("loading");
     try {
