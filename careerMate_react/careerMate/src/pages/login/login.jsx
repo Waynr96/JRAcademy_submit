@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { validateLoginEmail, validateLoginPassword, validateLogin } from "../../utils/validators";
+import { useEmail } from "../../hooks/useEmail";
 import TextInput from "../../components/TextInput";
 import "./login.css";
 
@@ -18,18 +19,11 @@ function mockLogin(email, password) {
 
 function Login() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const { email, emailError, emailChange, setEmailError } = useEmail(validateLoginEmail);
   const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
-
-  function emailChange(e) {
-    const value = e.target.value;
-    setEmail(value);
-    setEmailError(validateLoginEmail(value));
-  }
 
   function passwordChange(e) {
     const value = e.target.value;

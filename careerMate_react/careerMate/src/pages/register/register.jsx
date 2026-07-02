@@ -7,6 +7,7 @@ import {
   validateConfirmPassword,
   validateRegister,
 } from "../../utils/validators";
+import { useEmail } from "../../hooks/useEmail";
 import TextInput from "../../components/TextInput";
 import "./register.css";
 
@@ -20,8 +21,7 @@ function Register() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState("");
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
+  const { email, emailError, emailChange, setEmailError } = useEmail(validateRegisterEmail);
 
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -38,12 +38,6 @@ function Register() {
     const value = e.target.value;
     setName(value);
     setNameError(validateName(value));
-  }
-
-  function emailChange(e) {
-    const value = e.target.value;
-    setEmail(value);
-    setEmailError(validateRegisterEmail(value));
   }
 
   function passwordChange(e) {
