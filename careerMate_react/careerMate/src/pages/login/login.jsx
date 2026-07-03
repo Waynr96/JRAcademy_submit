@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { validateLoginEmail, validateLoginPassword, validateLogin } from "../../utils/validators";
 import { useEmail } from "../../hooks/useEmail";
@@ -24,6 +24,13 @@ function Login() {
   const [passwordError, setPasswordError] = useState("");
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
+
+  const emailInputRef = useRef(null);
+
+  // 页面第一次打开后，把光标自动定位到 Email 输入框
+  useEffect(() => {
+    emailInputRef.current.focus();
+  }, []);
 
   function passwordChange(e) {
     const value = e.target.value;
@@ -53,6 +60,7 @@ function Login() {
       <div className="login-card">
         <h1 className="login-title">Login</h1>
         <TextInput
+          ref={emailInputRef}
           label="Email"
           type="email"
           placeholder="Enter your email"

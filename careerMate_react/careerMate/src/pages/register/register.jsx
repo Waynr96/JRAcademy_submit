@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   validateName,
@@ -30,6 +30,13 @@ function Register() {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const [status, setStatus] = useState("idle");
+
+  const nameInputRef = useRef(null);
+
+  // 页面第一次打开后，把光标自动定位到 Name 输入框
+  useEffect(() => {
+    nameInputRef.current.focus();
+  }, []);
 
   // 事件处理函数
   // e 是事件对象，e.target.value 就是输入框里当前的文字
@@ -94,6 +101,7 @@ function Register() {
         {/* onSubmit：点击 type="submit" 的按钮时触发 handleSubmit */}
         <form onSubmit={handleSubmit}>
           <TextInput
+            ref={nameInputRef}
             label="Name"
             type="text"
             placeholder="Enter your name"
