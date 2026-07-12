@@ -1,0 +1,111 @@
+{
+  "info": {
+    "name": "Movie Management API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "movie-management-collection"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "movieId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "1. GET /v1/movies (keyword + sort + pagination)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/v1/movies?keyword=&sort=-rating&page=1&limit=10",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "movies"],
+          "query": [
+            { "key": "keyword", "value": "" },
+            { "key": "sort", "value": "-rating" },
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "10" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "2. GET /v1/movies/:id",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/v1/movies/{{movieId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "movies", "{{movieId}}"]
+        }
+      }
+    },
+    {
+      "name": "3. POST /v1/movies",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"The Matrix\",\n  \"description\": \"A hacker discovers the true nature of reality.\",\n  \"types\": [\"Sci-Fi\"]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/v1/movies",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "movies"]
+        }
+      }
+    },
+    {
+      "name": "4. PUT /v1/movies/:id",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"description\": \"Updated description via PUT.\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/v1/movies/{{movieId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "movies", "{{movieId}}"]
+        }
+      }
+    },
+    {
+      "name": "5. POST /v1/movies/:id/reviews",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"content\": \"Loved it!\",\n  \"rating\": 5\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/v1/movies/{{movieId}}/reviews",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "movies", "{{movieId}}", "reviews"]
+        }
+      }
+    },
+    {
+      "name": "6. GET /v1/movies/:id/reviews",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/v1/movies/{{movieId}}/reviews",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "movies", "{{movieId}}", "reviews"]
+        }
+      }
+    },
+    {
+      "name": "7. DELETE /v1/movies/:id",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "{{baseUrl}}/v1/movies/{{movieId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "movies", "{{movieId}}"]
+        }
+      }
+    }
+  ]
+}
