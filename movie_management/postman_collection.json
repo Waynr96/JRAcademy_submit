@@ -39,6 +39,18 @@
     },
     {
       "name": "3. POST /v1/movies",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const movie = pm.response.json();",
+              "pm.collectionVariables.set('movieId', movie.id);"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [{ "key": "Content-Type", "value": "application/json" }],
