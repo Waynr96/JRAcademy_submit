@@ -18,13 +18,13 @@ const movieRouter = express.Router();
  *     Review:
  *       type: object
  *       properties:
- *         id: { type: integer, example: 1 }
+ *         _id: { type: string, example: "65f1c2b8e4b0a1a2b3c4d5e6" }
  *         content: { type: string, example: "Amazing movie!" }
  *         rating: { type: number, example: 5 }
  *     Movie:
  *       type: object
  *       properties:
- *         id: { type: integer, example: 1 }
+ *         _id: { type: string, example: "65f1c2b8e4b0a1a2b3c4d5e6" }
  *         title: { type: string, example: "Inception" }
  *         description: { type: string }
  *         types:
@@ -99,7 +99,7 @@ movieRouter.post("/", createMovie);
  *       - in: path
  *         name: id
  *         required: true
- *         schema: { type: integer }
+ *         schema: { type: string }
  *     responses:
  *       200: { description: Movie found }
  *       404: { description: Movie not found }
@@ -116,7 +116,7 @@ movieRouter.get("/:id", getMovieById);
  *       - in: path
  *         name: id
  *         required: true
- *         schema: { type: integer }
+ *         schema: { type: string }
  *     requestBody:
  *       content:
  *         application/json:
@@ -145,7 +145,7 @@ movieRouter.put("/:id", updateMovieById);
  *       - in: path
  *         name: id
  *         required: true
- *         schema: { type: integer }
+ *         schema: { type: string }
  *     responses:
  *       204: { description: Movie deleted }
  *       404: { description: Movie not found }
@@ -162,7 +162,7 @@ movieRouter.delete("/:id", deleteMovieById);
  *       - in: path
  *         name: id
  *         required: true
- *         schema: { type: integer }
+ *         schema: { type: string }
  *     requestBody:
  *       required: true
  *       content:
@@ -190,7 +190,7 @@ movieRouter.post("/:id/reviews", createReview);
  *       - in: path
  *         name: id
  *         required: true
- *         schema: { type: integer }
+ *         schema: { type: string }
  *     responses:
  *       200: { description: List of reviews }
  *       404: { description: Movie not found }

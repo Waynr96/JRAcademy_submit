@@ -1,38 +1,40 @@
-const movieModel = require("../models/movie.model");
+const mongoose = require("mongoose");
+const Movie = require("../models/movie.model");
+const logger = require("../utils/logger");
 
-const getAllMovies = (req, res) => {
-  let { keyword, sort, page = 1, limit = 10 } = req.query;
-  page = parseInt(page);
-  limit = parseInt(limit);
+const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 
-  let filteredMovies = [...movieModel.getAll()];
+const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-  if (keyword) {
-    filteredMovies = filteredMovies.filter((movie) => {
-      const insensitiveTitle = movie.title.toLowerCase();
-      const insensitiveDescription = movie.description.toLowerCase();
-      const insensitiveKeyword = keyword.toLowerCase();
-      return (
-        insensitiveTitle.includes(insensitiveKeyword) ||
-        insensitiveDescription.includes(insensitiveKeyword)
-      );
-    });
+const getAllMovies = async (req, res) => {
+  try {
+    let { keyword, sort, page = 1, limit = 10 } = req.query;
+    page = parseInt(page);
+    limit = parseInt(limit);
+
+    const filter = {};
+    if (keyword) {
+      const regex = new RegExp(escapeRegex(keyword), "i");
+      filter.$or = [{ title: regex }, { description: regex }];
+    }
+
+    let query = Movie.find(filter);
+
+    if (sort === "rating") {
+      query = query.sort({ averageRating: 1 });
+    } else if (sort === "-rating") {
+      query = query.sort({ averageRating: -1 });
+    }
+
+    const movies = await query.skip((page - 1) * limit).limit(limit);
+    res.json(movies);
+  } catch (err) {
+    logger.error(`getAllMovies failed: ${err.message}`);
+    res.status(500).json({ message: "Failed to fetch movies" });
   }
-
-  if (sort === "rating") {
-    filteredMovies.sort((a, b) => a.averageRating - b.averageRating);
-  } else if (sort === "-rating") {
-    filteredMovies.sort((a, b) => b.averageRating - a.averageRating);
-  }
-
-  const startIndex = (page - 1) * limit;
-  const endIndex = startIndex + limit;
-  filteredMovies = filteredMovies.slice(startIndex, endIndex);
-
-  res.json(filteredMovies);
 };
 
-const createMovie = (req, res) => {
+const createMovie = async (req, res) => {
   const { title, description, types } = req.body;
   if (!title || !description || !Array.isArray(types) || types.length === 0) {
     res.status(400).json({
@@ -41,12 +43,22 @@ const createMovie = (req, res) => {
     return;
   }
 
-  const movie = movieModel.create({ title, description, types });
-  res.status(201).json(movie);
+  try {
+    const movie = await Movie.create({ title, description, types });
+    res.status(201).json(movie);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 };
 
-const getMovieById = (req, res) => {
-  const movie = movieModel.getById(parseInt(req.params.id));
+const getMovieById = async (req, res) => {
+  const { id } = req.params;
+  if (!isValidId(id)) {
+    res.status(404).json({ message: "Movie not found" });
+    return;
+  }
+
+  const movie = await Movie.findById(id);
   if (!movie) {
     res.status(404).json({ message: "Movie not found" });
     return;
@@ -54,23 +66,46 @@ const getMovieById = (req, res) => {
   res.json(movie);
 };
 
-const updateMovieById = (req, res) => {
+const updateMovieById = async (req, res) => {
+  const { id } = req.params;
   const { title, description, types } = req.body;
   if (types !== undefined && !Array.isArray(types)) {
     res.status(400).json({ message: "Types must be an array" });
     return;
   }
-
-  const movie = movieModel.updateById(parseInt(req.params.id), { title, description, types });
-  if (!movie) {
+  if (!isValidId(id)) {
     res.status(404).json({ message: "Movie not found" });
     return;
   }
-  res.json(movie);
+
+  const updates = {};
+  if (title) updates.title = title;
+  if (description) updates.description = description;
+  if (types) updates.types = types;
+
+  try {
+    const movie = await Movie.findByIdAndUpdate(id, updates, {
+      new: true,
+      runValidators: true,
+    });
+    if (!movie) {
+      res.status(404).json({ message: "Movie not found" });
+      return;
+    }
+    res.json(movie);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 };
 
-const deleteMovieById = (req, res) => {
-  const deleted = movieModel.deleteById(parseInt(req.params.id));
+const deleteMovieById = async (req, res) => {
+  const { id } = req.params;
+  if (!isValidId(id)) {
+    res.status(404).json({ message: "Movie not found" });
+    return;
+  }
+
+  const deleted = await Movie.findByIdAndDelete(id);
   if (!deleted) {
     res.status(404).json({ message: "Movie not found" });
     return;
@@ -78,7 +113,8 @@ const deleteMovieById = (req, res) => {
   res.sendStatus(204);
 };
 
-const createReview = (req, res) => {
+const createReview = async (req, res) => {
+  const { id } = req.params;
   const { content, rating } = req.body;
   if (!content || !rating || rating < 1 || rating > 5) {
     res.status(400).json({
@@ -86,22 +122,39 @@ const createReview = (req, res) => {
     });
     return;
   }
-
-  const review = movieModel.addReview(parseInt(req.params.id), { content, rating });
-  if (!review) {
+  if (!isValidId(id)) {
     res.status(404).json({ message: "Movie not found" });
     return;
   }
-  res.status(201).json(review);
+
+  const movie = await Movie.findById(id);
+  if (!movie) {
+    res.status(404).json({ message: "Movie not found" });
+    return;
+  }
+
+  movie.reviews.push({ content, rating });
+  movie.averageRating = +(
+    movie.reviews.reduce((sum, r) => sum + r.rating, 0) / movie.reviews.length
+  ).toFixed(2);
+  await movie.save();
+
+  res.status(201).json(movie.reviews[movie.reviews.length - 1]);
 };
 
-const getReviews = (req, res) => {
-  const reviews = movieModel.getReviews(parseInt(req.params.id));
-  if (!reviews) {
+const getReviews = async (req, res) => {
+  const { id } = req.params;
+  if (!isValidId(id)) {
     res.status(404).json({ message: "Movie not found" });
     return;
   }
-  res.json(reviews);
+
+  const movie = await Movie.findById(id);
+  if (!movie) {
+    res.status(404).json({ message: "Movie not found" });
+    return;
+  }
+  res.json(movie.reviews);
 };
 
 module.exports = {

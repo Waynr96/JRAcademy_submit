@@ -8,6 +8,7 @@ const logger = require("./utils/logger");
 const morganMiddleware = require("./middleware/morgan.middleware");
 const rateLimiter = require("./middleware/rateLimit.middleware");
 const openapiSpecification = require("./utils/swagger");
+const connectDB = require("./utils/db");
 
 const { PORT = 3000 } = process.env;
 
@@ -22,6 +23,14 @@ app.use("/v1/movies", movieRouter);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 
-app.listen(PORT, () => {
-  logger.info(`Server listening on port ${PORT}`);
+async function start() {
+  await connectDB();
+  app.listen(PORT, () => {
+    logger.info(`Server listening on port ${PORT}`);
+  });
+}
+
+start().catch((err) => {
+  logger.error(`Failed to start server: ${err.message}`);
+  process.exit(1);
 });
