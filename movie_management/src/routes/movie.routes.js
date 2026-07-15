@@ -8,6 +8,7 @@ const {
   createReview,
   getReviews,
 } = require("../controllers/movie.controller");
+const validateId = require("../middleware/validateId.middleware");
 
 const movieRouter = express.Router();
 
@@ -104,7 +105,7 @@ movieRouter.post("/", createMovie);
  *       200: { description: Movie found }
  *       404: { description: Movie not found }
  */
-movieRouter.get("/:id", getMovieById);
+movieRouter.get("/:id", validateId, getMovieById);
 
 /**
  * @swagger
@@ -133,7 +134,7 @@ movieRouter.get("/:id", getMovieById);
  *       400: { description: Validation failed }
  *       404: { description: Movie not found }
  */
-movieRouter.put("/:id", updateMovieById);
+movieRouter.put("/:id", validateId, updateMovieById);
 
 /**
  * @swagger
