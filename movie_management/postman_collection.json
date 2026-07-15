@@ -6,118 +6,697 @@
   },
   "variable": [
     { "key": "baseUrl", "value": "http://localhost:3000" },
-    { "key": "movieId", "value": "1" }
+    { "key": "movieId", "value": "" },
+    { "key": "reviewId", "value": "" },
+    { "key": "nonExistentId", "value": "000000000000000000000000" }
   ],
   "item": [
     {
-      "name": "1. GET /v1/movies (keyword + sort + pagination)",
-      "request": {
-        "method": "GET",
-        "url": {
-          "raw": "{{baseUrl}}/v1/movies?keyword=&sort=-rating&page=1&limit=10",
-          "host": ["{{baseUrl}}"],
-          "path": ["v1", "movies"],
-          "query": [
-            { "key": "keyword", "value": "" },
-            { "key": "sort", "value": "-rating" },
-            { "key": "page", "value": "1" },
-            { "key": "limit", "value": "10" }
-          ]
-        }
-      }
-    },
-    {
-      "name": "2. GET /v1/movies/:id",
-      "request": {
-        "method": "GET",
-        "url": {
-          "raw": "{{baseUrl}}/v1/movies/{{movieId}}",
-          "host": ["{{baseUrl}}"],
-          "path": ["v1", "movies", "{{movieId}}"]
-        }
-      }
-    },
-    {
-      "name": "3. POST /v1/movies",
-      "event": [
+      "name": "Movies",
+      "item": [
         {
-          "listen": "test",
-          "script": {
-            "type": "text/javascript",
-            "exec": [
-              "const movie = pm.response.json();",
-              "pm.collectionVariables.set('movieId', movie.id);"
-            ]
+          "name": "Create Movie - Success (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test(\"Response body matches created movie\", function () {",
+                  "  const movie = pm.response.json();",
+                  "  pm.expect(movie).to.have.property(\"_id\");",
+                  "  pm.expect(movie.title).to.eql(\"The Matrix\");",
+                  "  pm.expect(movie.description).to.eql(\"A hacker discovers the true nature of reality.\");",
+                  "  pm.expect(movie.types).to.eql([\"Sci-Fi\"]);",
+                  "  pm.expect(movie.averageRating).to.eql(0);",
+                  "  pm.expect(movie.reviews).to.be.an(\"array\").that.is.empty;",
+                  "  pm.collectionVariables.set(\"movieId\", movie._id);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"The Matrix\",\n  \"description\": \"A hacker discovers the true nature of reality.\",\n  \"types\": [\"Sci-Fi\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/movies",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "movies"]
+            }
+          }
+        },
+        {
+          "name": "Create Movie - Missing Fields (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test(\"Error message returned\", function () {",
+                  "  pm.expect(pm.response.json().message).to.eql(\"All fields are required and types must be an non-empty array\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"No Description Movie\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/movies",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "movies"]
+            }
+          }
+        },
+        {
+          "name": "Create Movie - Empty Types Array (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test(\"Error message returned\", function () {",
+                  "  pm.expect(pm.response.json().message).to.eql(\"All fields are required and types must be an non-empty array\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Empty Types\",\n  \"description\": \"Should fail validation\",\n  \"types\": []\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/movies",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "movies"]
+            }
+          }
+        },
+        {
+          "name": "List Movies - Default (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Response is an array\", function () {",
+                  "  pm.expect(pm.response.json()).to.be.an(\"array\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/movies",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "movies"]
+            }
+          }
+        },
+        {
+          "name": "List Movies - Keyword Search (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"All results contain the keyword\", function () {",
+                  "  const movies = pm.response.json();",
+                  "  pm.expect(movies.length).to.be.above(0);",
+                  "  movies.forEach((movie) => {",
+                  "    const haystack = (movie.title + movie.description).toLowerCase();",
+                  "    pm.expect(haystack).to.include(\"matrix\");",
+                  "  });",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/movies?keyword=matrix",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "movies"],
+              "query": [{ "key": "keyword", "value": "matrix" }]
+            }
+          }
+        },
+        {
+          "name": "List Movies - Sort by Rating Desc (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Results sorted by averageRating descending\", function () {",
+                  "  const movies = pm.response.json();",
+                  "  for (let i = 1; i < movies.length; i++) {",
+                  "    pm.expect(movies[i - 1].averageRating).to.be.at.least(movies[i].averageRating);",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/movies?sort=-rating",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "movies"],
+              "query": [{ "key": "sort", "value": "-rating" }]
+            }
+          }
+        },
+        {
+          "name": "List Movies - Pagination (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Result count does not exceed limit\", function () {",
+                  "  const movies = pm.response.json();",
+                  "  pm.expect(movies.length).to.be.at.most(2);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/movies?page=1&limit=2",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "movies"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "2" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Movie By Id - Success (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Movie id matches requested id\", function () {",
+                  "  const movie = pm.response.json();",
+                  "  pm.expect(movie._id).to.eql(pm.collectionVariables.get(\"movieId\"));",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/movies/{{movieId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "movies", "{{movieId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Movie By Id - Invalid Id Format (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {",
+                  "  pm.response.to.have.status(404);",
+                  "});",
+                  "pm.test(\"Error message returned\", function () {",
+                  "  pm.expect(pm.response.json().message).to.eql(\"Movie not found\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/movies/not-a-valid-id",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "movies", "not-a-valid-id"]
+            }
+          }
+        },
+        {
+          "name": "Get Movie By Id - Not Found (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {",
+                  "  pm.response.to.have.status(404);",
+                  "});",
+                  "pm.test(\"Error message returned\", function () {",
+                  "  pm.expect(pm.response.json().message).to.eql(\"Movie not found\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/movies/{{nonExistentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "movies", "{{nonExistentId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Movie - Success (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Description was updated\", function () {",
+                  "  const movie = pm.response.json();",
+                  "  pm.expect(movie.description).to.eql(\"Updated description via PUT.\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated description via PUT.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/movies/{{movieId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "movies", "{{movieId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Movie - Invalid Types (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test(\"Error message returned\", function () {",
+                  "  pm.expect(pm.response.json().message).to.eql(\"Types must be an array\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"types\": \"not-an-array\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/movies/{{movieId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "movies", "{{movieId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Movie - Not Found (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {",
+                  "  pm.response.to.have.status(404);",
+                  "});",
+                  "pm.test(\"Error message returned\", function () {",
+                  "  pm.expect(pm.response.json().message).to.eql(\"Movie not found\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Ghost Update\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/movies/{{nonExistentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "movies", "{{nonExistentId}}"]
+            }
           }
         }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [{ "key": "Content-Type", "value": "application/json" }],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"title\": \"The Matrix\",\n  \"description\": \"A hacker discovers the true nature of reality.\",\n  \"types\": [\"Sci-Fi\"]\n}"
+      ]
+    },
+    {
+      "name": "Reviews",
+      "item": [
+        {
+          "name": "Add Review - Success (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test(\"Review body matches payload\", function () {",
+                  "  const review = pm.response.json();",
+                  "  pm.expect(review).to.have.property(\"_id\");",
+                  "  pm.expect(review.content).to.eql(\"Loved it!\");",
+                  "  pm.expect(review.rating).to.eql(5);",
+                  "  pm.collectionVariables.set(\"reviewId\", review._id);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Loved it!\",\n  \"rating\": 5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/movies/{{movieId}}/reviews",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "movies", "{{movieId}}", "reviews"]
+            }
+          }
         },
-        "url": {
-          "raw": "{{baseUrl}}/v1/movies",
-          "host": ["{{baseUrl}}"],
-          "path": ["v1", "movies"]
-        }
-      }
-    },
-    {
-      "name": "4. PUT /v1/movies/:id",
-      "request": {
-        "method": "PUT",
-        "header": [{ "key": "Content-Type", "value": "application/json" }],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"description\": \"Updated description via PUT.\"\n}"
+        {
+          "name": "Add Review - Missing Content (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test(\"Error message returned\", function () {",
+                  "  pm.expect(pm.response.json().message).to.eql(\"Content is required and rating must be between 1 and 5\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 4\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/movies/{{movieId}}/reviews",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "movies", "{{movieId}}", "reviews"]
+            }
+          }
         },
-        "url": {
-          "raw": "{{baseUrl}}/v1/movies/{{movieId}}",
-          "host": ["{{baseUrl}}"],
-          "path": ["v1", "movies", "{{movieId}}"]
-        }
-      }
-    },
-    {
-      "name": "5. POST /v1/movies/:id/reviews",
-      "request": {
-        "method": "POST",
-        "header": [{ "key": "Content-Type", "value": "application/json" }],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"content\": \"Loved it!\",\n  \"rating\": 5\n}"
+        {
+          "name": "Add Review - Rating Out of Range (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test(\"Error message returned\", function () {",
+                  "  pm.expect(pm.response.json().message).to.eql(\"Content is required and rating must be between 1 and 5\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Way too generous\",\n  \"rating\": 6\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/movies/{{movieId}}/reviews",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "movies", "{{movieId}}", "reviews"]
+            }
+          }
         },
-        "url": {
-          "raw": "{{baseUrl}}/v1/movies/{{movieId}}/reviews",
-          "host": ["{{baseUrl}}"],
-          "path": ["v1", "movies", "{{movieId}}", "reviews"]
+        {
+          "name": "Add Review - Movie Not Found (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {",
+                  "  pm.response.to.have.status(404);",
+                  "});",
+                  "pm.test(\"Error message returned\", function () {",
+                  "  pm.expect(pm.response.json().message).to.eql(\"Movie not found\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Ghost review\",\n  \"rating\": 3\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/movies/{{nonExistentId}}/reviews",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "movies", "{{nonExistentId}}", "reviews"]
+            }
+          }
+        },
+        {
+          "name": "List Reviews - Success (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Reviews array contains the created review\", function () {",
+                  "  const reviews = pm.response.json();",
+                  "  pm.expect(reviews).to.be.an(\"array\");",
+                  "  const ids = reviews.map((r) => r._id);",
+                  "  pm.expect(ids).to.include(pm.collectionVariables.get(\"reviewId\"));",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/movies/{{movieId}}/reviews",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "movies", "{{movieId}}", "reviews"]
+            }
+          }
+        },
+        {
+          "name": "List Reviews - Movie Not Found (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {",
+                  "  pm.response.to.have.status(404);",
+                  "});",
+                  "pm.test(\"Error message returned\", function () {",
+                  "  pm.expect(pm.response.json().message).to.eql(\"Movie not found\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/movies/{{nonExistentId}}/reviews",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "movies", "{{nonExistentId}}", "reviews"]
+            }
+          }
         }
-      }
+      ]
     },
     {
-      "name": "6. GET /v1/movies/:id/reviews",
-      "request": {
-        "method": "GET",
-        "url": {
-          "raw": "{{baseUrl}}/v1/movies/{{movieId}}/reviews",
-          "host": ["{{baseUrl}}"],
-          "path": ["v1", "movies", "{{movieId}}", "reviews"]
+      "name": "Cleanup",
+      "item": [
+        {
+          "name": "Delete Movie - Not Found (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {",
+                  "  pm.response.to.have.status(404);",
+                  "});",
+                  "pm.test(\"Error message returned\", function () {",
+                  "  pm.expect(pm.response.json().message).to.eql(\"Movie not found\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/v1/movies/{{nonExistentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "movies", "{{nonExistentId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Movie - Success (204)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 204\", function () {",
+                  "  pm.response.to.have.status(204);",
+                  "});",
+                  "pm.test(\"Response body is empty\", function () {",
+                  "  pm.expect(pm.response.text()).to.eql(\"\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/v1/movies/{{movieId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "movies", "{{movieId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Movie After Delete - Confirms Removal (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 404 after deletion\", function () {",
+                  "  pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/movies/{{movieId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "movies", "{{movieId}}"]
+            }
+          }
         }
-      }
-    },
-    {
-      "name": "7. DELETE /v1/movies/:id",
-      "request": {
-        "method": "DELETE",
-        "url": {
-          "raw": "{{baseUrl}}/v1/movies/{{movieId}}",
-          "host": ["{{baseUrl}}"],
-          "path": ["v1", "movies", "{{movieId}}"]
-        }
-      }
+      ]
     }
   ]
 }
