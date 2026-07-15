@@ -151,7 +151,7 @@ movieRouter.put("/:id", validateId, updateMovieById);
  *       204: { description: Movie deleted }
  *       404: { description: Movie not found }
  */
-movieRouter.delete("/:id", deleteMovieById);
+movieRouter.delete("/:id", validateId, deleteMovieById);
 
 /**
  * @swagger
@@ -179,7 +179,7 @@ movieRouter.delete("/:id", deleteMovieById);
  *       400: { description: Validation failed }
  *       404: { description: Movie not found }
  */
-movieRouter.post("/:id/reviews", createReview);
+movieRouter.post("/:id/reviews", validateId, createReview);
 
 /**
  * @swagger
@@ -196,6 +196,6 @@ movieRouter.post("/:id/reviews", createReview);
  *       200: { description: List of reviews }
  *       404: { description: Movie not found }
  */
-movieRouter.get("/:id/reviews", getReviews);
+movieRouter.get("/:id/reviews", validateId, getReviews);
 
 module.exports = movieRouter;

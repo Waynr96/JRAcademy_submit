@@ -1,8 +1,5 @@
-const mongoose = require("mongoose");
 const Movie = require("../models/movie.model");
 const logger = require("../utils/logger");
-
-const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
@@ -53,11 +50,6 @@ const createMovie = async (req, res) => {
 
 const getMovieById = async (req, res) => {
   const { id } = req.params;
-  if (!isValidId(id)) {
-    res.status(404).json({ message: "Movie not found" });
-    return;
-  }
-
   const movie = await Movie.findById(id);
   if (!movie) {
     res.status(404).json({ message: "Movie not found" });
@@ -71,10 +63,6 @@ const updateMovieById = async (req, res) => {
   const { title, description, types } = req.body;
   if (types !== undefined && !Array.isArray(types)) {
     res.status(400).json({ message: "Types must be an array" });
-    return;
-  }
-  if (!isValidId(id)) {
-    res.status(404).json({ message: "Movie not found" });
     return;
   }
 
@@ -100,11 +88,6 @@ const updateMovieById = async (req, res) => {
 
 const deleteMovieById = async (req, res) => {
   const { id } = req.params;
-  if (!isValidId(id)) {
-    res.status(404).json({ message: "Movie not found" });
-    return;
-  }
-
   const deleted = await Movie.findByIdAndDelete(id);
   if (!deleted) {
     res.status(404).json({ message: "Movie not found" });
@@ -120,10 +103,6 @@ const createReview = async (req, res) => {
     res.status(400).json({
       message: "Content is required and rating must be between 1 and 5",
     });
-    return;
-  }
-  if (!isValidId(id)) {
-    res.status(404).json({ message: "Movie not found" });
     return;
   }
 
@@ -144,11 +123,6 @@ const createReview = async (req, res) => {
 
 const getReviews = async (req, res) => {
   const { id } = req.params;
-  if (!isValidId(id)) {
-    res.status(404).json({ message: "Movie not found" });
-    return;
-  }
-
   const movie = await Movie.findById(id);
   if (!movie) {
     res.status(404).json({ message: "Movie not found" });
